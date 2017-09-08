@@ -1,0 +1,8 @@
+C:\Users\fpearson\Projects\plugin\bin\Debug\netstandard2.0\plugin.deps.json
+C:\Users\fpearson\Projects\plugin\bin\Debug\netstandard2.0\plugin.dll
+C:\Users\fpearson\Projects\plugin\bin\Debug\netstandard2.0\plugin.pdb
+C:\Users\fpearson\Projects\plugin\obj\Debug\netstandard2.0\plugin.csproj.CoreCompileInputs.cache
+C:\Users\fpearson\Projects\plugin\obj\Debug\netstandard2.0\plugin.AssemblyInfoInputs.cache
+C:\Users\fpearson\Projects\plugin\obj\Debug\netstandard2.0\plugin.AssemblyInfo.cs
+C:\Users\fpearson\Projects\plugin\obj\Debug\netstandard2.0\plugin.dll
+C:\Users\fpearson\Projects\plugin\obj\Debug\netstandard2.0\plugin.pdb

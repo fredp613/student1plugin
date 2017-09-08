@@ -1,0 +1,10 @@
+C:\Users\fpearson\Projects\plugin\bin\Debug\net452\plugin.dll
+C:\Users\fpearson\Projects\plugin\bin\Debug\net452\plugin.pdb
+C:\Users\fpearson\Projects\plugin\bin\Debug\net452\Microsoft.Crm.Sdk.Proxy.dll
+C:\Users\fpearson\Projects\plugin\bin\Debug\net452\Microsoft.Xrm.Sdk.dll
+C:\Users\fpearson\Projects\plugin\bin\Debug\net452\Microsoft.IdentityModel.dll
+C:\Users\fpearson\Projects\plugin\obj\Debug\net452\plugin.csproj.CoreCompileInputs.cache
+C:\Users\fpearson\Projects\plugin\obj\Debug\net452\plugin.AssemblyInfoInputs.cache
+C:\Users\fpearson\Projects\plugin\obj\Debug\net452\plugin.AssemblyInfo.cs
+C:\Users\fpearson\Projects\plugin\obj\Debug\net452\plugin.dll
+C:\Users\fpearson\Projects\plugin\obj\Debug\net452\plugin.pdb
