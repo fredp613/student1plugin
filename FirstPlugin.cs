@@ -1,9 +1,12 @@
-﻿
-using System;
-using System.ServiceModel;
+﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Net;
 
 // Microsoft Dynamics CRM namespace(s)
 using Microsoft.Xrm.Sdk;
+using System.ServiceModel;
 
 namespace Microsoft.Crm.Sdk.Samples
 {
@@ -35,36 +38,49 @@ namespace Microsoft.Crm.Sdk.Samples
                 // If not, this plug-in was not registered correctly.
                 if (entity.LogicalName != "account")
                     return;
-
-                try
+                using (WebClient client = new WebClient())
                 {
-                    // Create a task activity to follow up with the account customer in 7 days. 
-                    Entity followup = new Entity("task");
+                    try
+                {
 
-                    followup["subject"] = "Send e-mail to the new customer.";
-                    followup["description"] =
-                        "Follow up with the customer. Check if there are any new issues that need resolution.";
-                    followup["scheduledstart"] = DateTime.Now.AddDays(7);
-                    followup["scheduledend"] = DateTime.Now.AddDays(7);
-                    followup["category"] = context.PrimaryEntityName;
+                  
+                        var uri = new Uri("http://student0.fredp613.com:83/api/crms/crmtest");
+                        string responseStr = client.DownloadString("http://student0.fredp613.com:83/api/crms/crmtest");
+                        
+                        tracingService.Trace(responseStr);
+                        throw new InvalidPluginExecutionException(responseStr);
+                        // Create a task activity to follow up with the account customer in 7 days. 
+                        Entity followup = new Entity("task");
 
-                    // Refer to the account in the task activity.
-                    if (context.OutputParameters.Contains("id"))
-                    {
-                        Guid regardingobjectid = new Guid(context.OutputParameters["id"].ToString());
-                        string regardingobjectidType = "account";
+                        followup["subject"] = "Send e-mail to the new customer.";
+                        followup["description"] =
+                            responseStr;
+                            //"Follow up with the customer. Check if there are any new issues that need resolution.";
+                        followup["scheduledstart"] = DateTime.Now.AddDays(7);
+                        followup["scheduledend"] = DateTime.Now.AddDays(7);
+                        followup["category"] = context.PrimaryEntityName;
 
-                        followup["regardingobjectid"] =
-                        new EntityReference(regardingobjectidType, regardingobjectid);
-                    }
+                        // Refer to the account in the task activity.
+                        if (context.OutputParameters.Contains("id"))
+                        {
+                            Guid regardingobjectid = new Guid(context.OutputParameters["id"].ToString());
+                            string regardingobjectidType = "account";
 
-                    // Obtain the organization service reference.
-                    IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
-                    IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+                            followup["regardingobjectid"] =
+                            new EntityReference(regardingobjectidType, regardingobjectid);
+                        }
 
-                    // Create the task in Microsoft Dynamics CRM.
-                    tracingService.Trace("FollowupPlugin: Creating the task activity.");
-                    service.Create(followup);
+                        // Obtain the organization service reference.
+                        IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
+                        IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
+                        // Create the task in Microsoft Dynamics CRM.
+                        tracingService.Trace("FollowupPlugin: Creating the task activity.");
+                        service.Create(followup);
+                        throw new InvalidPluginExecutionException("WebClientPlugin completed successfully.");
+
+                    
+                   
                 }
                 catch (FaultException<OrganizationServiceFault> ex)
                 {
@@ -75,6 +91,8 @@ namespace Microsoft.Crm.Sdk.Samples
                 {
                     tracingService.Trace("FollowupPlugin: {0}", ex.ToString());
                     throw;
+                }
+
                 }
             }
         }
