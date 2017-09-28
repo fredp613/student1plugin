@@ -36,50 +36,16 @@ namespace Microsoft.Crm.Sdk.Samples
 
                 // Verify that the target entity represents an account.
                 // If not, this plug-in was not registered correctly.
-                if (entity.LogicalName != "account")
+                if (entity.LogicalName != "tr_inquiry")
                     return;
                 using (WebClient client = new WebClient())
                 {
                     try
                 {
 
-                  
-                        var uri = new Uri("http://student0.fredp613.com:83/api/crms/crmtest");
-                        string responseStr = client.DownloadString("http://student0.fredp613.com:83/api/crms/crmtest");
-                        
-                        tracingService.Trace(responseStr);
-                        throw new InvalidPluginExecutionException(responseStr);
-                        // Create a task activity to follow up with the account customer in 7 days. 
-                        Entity followup = new Entity("task");
+                  	var response = entity.getAttributeValue<string>("tr_response");
+                        UpdateAPI(entity.Id.ToString(), response);
 
-                        followup["subject"] = "Send e-mail to the new customer.";
-                        followup["description"] =
-                            responseStr;
-                            //"Follow up with the customer. Check if there are any new issues that need resolution.";
-                        followup["scheduledstart"] = DateTime.Now.AddDays(7);
-                        followup["scheduledend"] = DateTime.Now.AddDays(7);
-                        followup["category"] = context.PrimaryEntityName;
-
-                        // Refer to the account in the task activity.
-                        if (context.OutputParameters.Contains("id"))
-                        {
-                            Guid regardingobjectid = new Guid(context.OutputParameters["id"].ToString());
-                            string regardingobjectidType = "account";
-
-                            followup["regardingobjectid"] =
-                            new EntityReference(regardingobjectidType, regardingobjectid);
-                        }
-
-                        // Obtain the organization service reference.
-                        IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
-                        IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
-
-                        // Create the task in Microsoft Dynamics CRM.
-                        tracingService.Trace("FollowupPlugin: Creating the task activity.");
-                        service.Create(followup);
-                        throw new InvalidPluginExecutionException("WebClientPlugin completed successfully.");
-
-                    
                    
                 }
                 catch (FaultException<OrganizationServiceFault> ex)
@@ -97,4 +63,11 @@ namespace Microsoft.Crm.Sdk.Samples
             }
         }
     }
+    
+	public void UpdatAPI(string Id, string response) {
+		var updateData = "{'InquiryId': "+Id+", 'Response': "+response+"}";
+		var client = new WebClient(); 
+		client.headers.Add(HttpRequestHeader.ContentType, "application/json"); 
+		client.UploadStringAsync(new Uri("http://s4.fredp613.com/api/v1/inquries/"+Id, "PUT", UpdateData);
+	}
 }
